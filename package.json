@@ -12,6 +12,7 @@
     "@fontsource-variable/noto-sans-jp": "^5.2.9",
     "@tailwindcss/vite": "^4.1.17",
     "astro": "^5.16.5",
+    "astro-relative-links": "^0.4.2",
     "tailwindcss": "^4.1.17"
   },
   "devDependencies": {
