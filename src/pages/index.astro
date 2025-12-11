@@ -1,0 +1,75 @@
+---
+import '@fontsource-variable/noto-sans-jp';
+import '../styles/global.css';
+---
+
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>UI</title>
+  </head>
+  <body>
+    <div class="min-h-screen w-full bg-gray-50 p-4 text-gray-900">
+      <!-- 日付・更新時間 -->
+      <div class="border-b border-gray-300 pb-2 mb-3 flex justify-between text-lg">
+        <span class="font-semibold">12/11(木)</span>
+        <span class="text-gray-600">更新 08:15</span>
+      </div>
+
+      <!-- 現在の天気 -->
+      <div class="border-b border-gray-300 pb-3 mb-3 flex items-center justify-between">
+        <div class="flex items-center space-x-3 text-4xl">
+          <span>☀️</span>
+          <span>2℃ / -4℃</span>
+        </div>
+
+        <div class="text-base text-gray-700 space-x-5">
+          <span>体感：-6℃</span>
+          <span>湿度：45%</span>
+          <span>降水：10%</span>
+        </div>
+      </div>
+
+      <!-- 今日これから -->
+      <div class="border-b border-gray-300 pb-4 mb-3">
+        <div class="font-semibold mb-2 text-lg">今日これから</div>
+
+        <!-- 時間 -->
+        <div class="grid grid-cols-5 text-center text-sm mb-1">
+          <span>0h</span><span>6h</span><span>12h</span><span>18h</span><span>24h</span>
+        </div>
+
+        <!-- 天気アイコン -->
+        <div class="grid grid-cols-5 text-center text-3xl mb-1">
+          <span>☀️</span><span>☁️</span><span>☀️</span><span>☀️</span><span>🌙</span>
+        </div>
+
+        <!-- 気温 -->
+        <div class="grid grid-cols-5 text-center text-sm">
+          <span>-4℃</span><span>-2℃</span><span>1℃</span><span>-1℃</span><span>-3℃</span>
+        </div>
+      </div>
+
+      <!-- ニュース -->
+      <div class="space-y-2 text-lg">
+        <div class="flex justify-between items-center border-b border-gray-200 pb-1">
+          <span class="truncate">・円相場150円台に下落、株安広がる</span>
+          <span class="text-blue-600 cursor-pointer">[QR]</span>
+        </div>
+
+        <div class="flex justify-between items-center border-b border-gray-200 pb-1">
+          <span class="truncate">・道東で今季初の大雪、交通遅延</span>
+          <span class="text-blue-600 cursor-pointer">[QR]</span>
+        </div>
+
+        <div class="flex justify-between items-center border-b border-gray-200 pb-1">
+          <span class="truncate">・新型AIチップが国内発売（任意）</span>
+          <span class="text-blue-600 cursor-pointer">[QR]</span>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
