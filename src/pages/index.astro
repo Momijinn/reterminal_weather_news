@@ -6,6 +6,10 @@ import NewsItemList from '../ui/components/NewsItemList.astro';
 import UpcomingWeatherItemList from '../ui/components/UpcomingWeatherItemList.astro';
 import TodayWeather from '../ui/components/TodayWeather.astro';
 import TodayWeatherDetail from '../ui/components/TodayWeatherDetail.astro';
+import { getNews } from '../services/newsService';
+import { Debug } from 'astro:components';
+
+const news = await getNews();
 ---
 
 <html lang="ja">
@@ -74,19 +78,7 @@ import TodayWeatherDetail from '../ui/components/TodayWeatherDetail.astro';
       <!-- news -->
       <div>
         <SubTitle text="ニュース" />
-        <NewsItemList
-          items={[
-            {
-              title:
-                'ニュースタイトル1ニュースタイトル1ニュースタイトル1ニュースタイトル1ニュースタイトル1ニュースタイトル1ニュースタイトル1ニュースタイトル1ニュースタイトル1ニュースタイトル1ニュースタイトル1ニュースタイトル1ニュースタイトル1ニュースタイトル1ニュースタイトル1ニュースタイトル1',
-              url: 'https://example.com/news1',
-            },
-            {
-              title: 'ニュースタイトル2',
-              url: 'https://example.com/news2',
-            },
-          ]}
-        />
+        <NewsItemList items={news} />
       </div>
     </div>
   </body>
