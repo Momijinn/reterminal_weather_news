@@ -1,0 +1,14 @@
+---
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  weather?: 'sunny' | 'cloudy' | 'rainy';
+  size: 'small' | 'medium' | 'large';
+}
+
+const { weather, size } = Astro.props;
+
+const iconSize = size === 'small' ? 'text-4xl' : size === 'medium' ? 'text-6xl' : 'text-9xl';
+---
+
+<Icon name="wi:night-alt-cloudy-gusts" class=`${iconSize}` />

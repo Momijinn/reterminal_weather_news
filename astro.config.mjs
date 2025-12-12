@@ -2,13 +2,14 @@
 import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
 import relativeLinks from 'astro-relative-links';
-// https://astro.build/config
+import icon from 'astro-icon';
+
 export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
   },
 
-  integrations: [relativeLinks()],
+  integrations: [relativeLinks(), icon()],
 
   server: {
     port: 3000,

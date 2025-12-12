@@ -1,0 +1,10 @@
+---
+interface Props {
+  // No props for now
+  value?: string;
+}
+
+const { value = 'aa' } = Astro.props;
+---
+
+<div>{value}</div>
