@@ -3,6 +3,9 @@ name: Build and Deploy
 on:
   push:
     branches: [main]
+  schedule:
+    # 毎時0分に実行
+    - cron: '0 * * * *'
 
 permissions:
   contents: read
@@ -41,7 +44,7 @@ jobs:
           OWM_LON: ${{ vars.OWM_LON }}
 
       - name: Remove Unnecessary File
-        run: rm -rf ./dist/mockServiceWorker.js
+        run: rm -f ./dist/mockServiceWorker.js
 
       - name: Upload build output
         uses: actions/upload-pages-artifact@v3
