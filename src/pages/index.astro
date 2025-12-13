@@ -1,84 +1,60 @@
 ---
-import '@fontsource-variable/noto-sans-jp';
-import '../styles/global.css';
+import dayjs from 'dayjs';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
 import SubTitle from '../ui/parts/SubTitle.astro';
 import NewsItemList from '../ui/components/NewsItemList.astro';
 import UpcomingWeatherItemList from '../ui/components/UpcomingWeatherItemList.astro';
-import TodayWeather from '../ui/components/TodayWeather.astro';
-import TodayWeatherDetail from '../ui/components/TodayWeatherDetail.astro';
+import CurrentWeather from '../ui/components/CurrentWeather.astro';
+import CurrentWeatherDetail from '../ui/components/CurrentWeatherDetail.astro';
+
 import { getNews } from '../services/newsService';
+import { getWeather } from '../services/weatherService';
 
 const news = await getNews();
+const weather = await getWeather(42.9238, 143.1966);
+const now = dayjs();
 ---
 
-<html lang="ja">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
-    <title>ui</title>
-  </head>
-
-  <body>
-    <!-- root -->
-    <div class="flex h-screen w-full flex-col gap-6 p-2">
-      <!-- today -->
-      <div>
-        <div class="flex justify-between">
-          <SubTitle text="12/11(木)" />
-          <div>更新: 8:15</div>
-        </div>
-        <div class="flex justify-between">
-          <TodayWeather />
-          <TodayWeatherDetail />
-        </div>
+<BaseLayout>
+  <!-- root -->
+  <div class="flex h-screen w-full flex-col justify-between p-4">
+    <!-- today -->
+    <div class="bg-yellow-100">
+      <div class="flex justify-between">
+        <SubTitle text={now.format('MM/DD (ddd)')} />
+        <div>{`更新: ${now.format('HH:mm')}`}</div>
       </div>
-
-      <!-- 今日これから -->
-      <div class="">
-        <SubTitle text="今後の天気" />
-        <UpcomingWeatherItemList
-          items={[
-            {
-              datetime: '12:00',
-              weather: 'sunny',
-              temp: 20,
-            },
-            {
-              datetime: '15:00',
-              weather: 'cloudy',
-              temp: 19,
-            },
-            {
-              datetime: '18:00',
-              weather: 'rainy',
-              temp: 17,
-            },
-            {
-              datetime: '21:00',
-              weather: 'rainy',
-              temp: 16,
-            },
-            {
-              datetime: '24:00',
-              weather: 'cloudy',
-              temp: 15,
-            },
-            {
-              datetime: '3:00',
-              weather: 'sunny',
-              temp: 14,
-            },
-          ]}
+      <div class="flex justify-between">
+        <CurrentWeather
+          icon={weather.current.icon}
+          temperature={weather.current.temp}
+          description={weather.current.description}
+        />
+        <CurrentWeatherDetail
+          alerts={weather.alerts.map((alert) => {
+            return alert.event;
+          })}
         />
       </div>
-
-      <!-- news -->
-      <div>
-        <SubTitle text="ニュース" />
-        <NewsItemList items={news} />
-      </div>
     </div>
-  </body>
-</html>
+
+    <!-- 今日これから -->
+    <div class="bg-blue-100">
+      <SubTitle text="今後の天気" />
+      <UpcomingWeatherItemList
+        items={weather.hourly.map((item) => ({
+          date: item.date.format('HH:mm'),
+          icon: item.icon,
+          temp: item.temp,
+        }))}
+      />
+    </div>
+
+    <!-- news -->
+    <div class="bg-green-100">
+      <SubTitle text="ニュース" />
+      <NewsItemList items={news} />
+    </div>
+  </div>
+</BaseLayout>

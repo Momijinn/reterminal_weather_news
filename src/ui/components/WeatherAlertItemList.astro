@@ -1,0 +1,47 @@
+---
+import WeatherAlert from '../parts/WeatherAlert.astro';
+
+interface Props {
+  alerts: Array<string>;
+}
+
+const { alerts } = Astro.props;
+
+type AlertGroup = {
+  special: string[];
+  warning: string[];
+  advisory: string[];
+};
+
+const groupAlerts = (alerts: string[]): AlertGroup => {
+  return alerts.reduce<AlertGroup>(
+    (acc, alert) => {
+      if (alert.endsWith('特別警報')) {
+        acc.special = [...acc.special, alert];
+      } else if (alert.endsWith('警報')) {
+        acc.warning = [...acc.warning, alert];
+      } else if (alert.endsWith('注意報')) {
+        acc.advisory = [...acc.advisory, alert];
+      }
+      return acc;
+    },
+    { special: [], warning: [], advisory: [] }
+  );
+};
+
+const categorizedAlerts = groupAlerts(alerts);
+---
+
+<!--  -->
+<div class="flex flex-col flex-wrap gap-3">
+  <div class="flex justify-end gap-2">
+    {categorizedAlerts.special.map((alert) => <WeatherAlert value={alert} />)}
+  </div>
+  <div class="flex justify-end gap-2">
+    {categorizedAlerts.warning.map((alert) => <WeatherAlert value={alert} />)}
+  </div>
+
+  <div class="flex justify-end gap-2">
+    {categorizedAlerts.advisory.map((alert) => <WeatherAlert value={alert} />)}
+  </div>
+</div>

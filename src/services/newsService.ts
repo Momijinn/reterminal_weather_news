@@ -7,6 +7,15 @@ export interface NewsItem {
   pubDate: string;
 }
 
+const generateErrorNewsItem = (): NewsItem[] => {
+  const item = {
+    title: 'ニュースの取得に失敗しました',
+    url: '',
+    pubDate: '',
+  };
+  return [item, item];
+};
+
 export const getNews = async (): Promise<NewsItem[]> => {
   let response = '';
 
@@ -14,14 +23,14 @@ export const getNews = async (): Promise<NewsItem[]> => {
     response = await fetchNews();
   } catch (error) {
     console.error('Error fetching news:', error);
-    return [];
+    return generateErrorNewsItem();
   }
 
   const parser = new XMLParser();
   const xml = parser.parse(response);
   const rawItems = xml.rss.channel.item;
   if (!rawItems) {
-    return [];
+    return generateErrorNewsItem();
   }
   const itemsArray = Array.isArray(rawItems) ? rawItems : [rawItems];
 

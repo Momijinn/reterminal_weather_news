@@ -3,9 +3,9 @@ import UpcomingWeatherItem from '../parts/UpcomingWeatherItem.astro';
 
 interface Props {
   items: Array<{
-    datetime: string;
-    weather?: 'sunny' | 'cloudy' | 'rainy';
-    temp: number;
+    date: string;
+    icon: string;
+    temp: string;
   }>;
 }
 
@@ -13,9 +13,5 @@ const { items } = Astro.props;
 ---
 
 <div class="flex w-full justify-around">
-  {
-    items.map((item) => (
-      <UpcomingWeatherItem datetime={item.datetime} weather={item.weather} temp={item.temp} />
-    ))
-  }
+  {items.map((item) => <UpcomingWeatherItem date={item.date} icon={item.icon} temp={item.temp} />)}
 </div>
