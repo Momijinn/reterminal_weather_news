@@ -11,11 +11,9 @@ permissions:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
     env:
-      OWM_API_KEY: ${{ secrets.OWM_API_KEY }}
-      OWM_LAT: ${{ secrets.OWM_LAT }}
-      OWM_LON: ${{ secrets.OWM_LON }}
+      TZ: Asia/Tokyo
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -30,6 +28,10 @@ jobs:
 
       - name: Build site
         run: npm run build
+        env:
+          OWM_API_KEY: ${{ secrets.OWM_API_KEY }}
+          OWM_LAT: ${{ secrets.OWM_LAT }}
+          OWM_LON: ${{ secrets.OWM_LON }}
 
       - name: Remove Unnecessary File
         run: rm -rf ./dist/mockServiceWorker.js
