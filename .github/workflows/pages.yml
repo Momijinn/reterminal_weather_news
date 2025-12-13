@@ -24,14 +24,18 @@ jobs:
           node-version: 24
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Build site
-        run: npm run build
+        run: |
+          touch .env
+          echo "OWM_API_KEY=${{ secrets.OWM_API_KEY }}" >> .env
+          echo "OWM_LAT=${{ vars.OWM_LAT }}" >> .env
+          echo "OWM_LON=${{ vars.OWM_LON }}" >> .env
+
+          npm run build
         env:
-          OWM_API_KEY: ${{ secrets.OWM_API_KEY }}
-          OWM_LAT: ${{ vars.OWM_LAT }}
-          OWM_LON: ${{ vars.OWM_LON }}
+          NODE_ENV: production
 
       - name: Remove Unnecessary File
         run: rm -rf ./dist/mockServiceWorker.js
