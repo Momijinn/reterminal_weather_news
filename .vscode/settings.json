@@ -7,5 +7,5 @@
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "cSpell.words": ["qrcode", "reterminal"]
+  "cSpell.words": ["fontsource", "noto", "qrcode", "reterminal"]
 }
