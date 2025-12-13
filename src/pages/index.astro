@@ -19,8 +19,8 @@ const now = dayjs();
 <BaseLayout>
   <!-- root -->
   <div class="flex h-screen w-full flex-col justify-between p-4">
-    <!-- today -->
-    <div class="bg-yellow-100">
+    <!-- current day -->
+    <div>
       <div class="flex justify-between">
         <SubTitle text={now.format('MM/DD (ddd)')} />
         <div>{`更新: ${now.format('HH:mm')}`}</div>
@@ -40,7 +40,7 @@ const now = dayjs();
     </div>
 
     <!-- 今日これから -->
-    <div class="bg-blue-100">
+    <div>
       <SubTitle text="今後の天気" />
       <UpcomingWeatherItemList
         items={weather.hourly.map((item) => ({
@@ -52,7 +52,7 @@ const now = dayjs();
     </div>
 
     <!-- news -->
-    <div class="bg-green-100">
+    <div>
       <SubTitle text="ニュース" />
       <NewsItemList items={news} />
     </div>
