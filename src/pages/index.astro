@@ -12,7 +12,7 @@ import { getNews } from '../services/newsService';
 import { getWeather } from '../services/weatherService';
 
 const news = await getNews();
-const weather = await getWeather(42.9238, 143.1966);
+const weather = await getWeather();
 const now = dayjs();
 ---
 

@@ -85,11 +85,11 @@ const generateErrorWeatherData = (): WeatherData => {
   };
 };
 
-export const getWeather = async (lat: number, long: number): Promise<WeatherData> => {
+export const getWeather = async (): Promise<WeatherData> => {
   let response: Awaited<ReturnType<typeof fetchWeather>> | undefined;
 
   try {
-    response = await fetchWeather(lat, long);
+    response = await fetchWeather();
   } catch (error) {
     console.error('Error fetching weather:', error);
     return generateErrorWeatherData();
