@@ -10,7 +10,7 @@ const { value, size = 128 } = Astro.props;
 
 const qrCodeDataUrl = await QRCode.toDataURL(value, {
   width: size,
-  margin: 1,
+  margin: 0,
 });
 ---
 
