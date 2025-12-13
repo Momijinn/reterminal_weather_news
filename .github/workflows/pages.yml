@@ -29,13 +29,16 @@ jobs:
       - name: Build site
         run: |
           touch .env
-          echo "OWM_API_KEY=${{ secrets.OWM_API_KEY }}" >> .env
-          echo "OWM_LAT=${{ vars.OWM_LAT }}" >> .env
-          echo "OWM_LON=${{ vars.OWM_LON }}" >> .env
+          echo "OWM_API_KEY=$OWM_API_KEY" >> .env
+          echo "OWM_LAT=$OWM_LAT" >> .env
+          echo "OWM_LON=$OWM_LON" >> .env
 
           npm run build
         env:
           NODE_ENV: production
+          OWM_API_KEY: ${{ secrets.OWM_API_KEY }}
+          OWM_LAT: ${{ vars.OWM_LAT }}
+          OWM_LON: ${{ vars.OWM_LON }}
 
       - name: Remove Unnecessary File
         run: rm -rf ./dist/mockServiceWorker.js
