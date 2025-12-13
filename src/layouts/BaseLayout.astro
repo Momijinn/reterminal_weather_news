@@ -1,0 +1,24 @@
+---
+import '@fontsource-variable/noto-sans-jp';
+import '../styles/global.css';
+
+// 初期化（副作用）
+import '../libs/bootstrap';
+import { startMSW } from '../libs/msw';
+
+await startMSW();
+---
+
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>reTerminalWeatherNews</title>
+  </head>
+
+  <body>
+    <slot />
+  </body>
+</html>

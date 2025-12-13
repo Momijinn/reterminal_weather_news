@@ -12,6 +12,10 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      OWM_API_KEY: ${{ secrets.OWM_API_KEY }}
+      OWM_LAT: ${{ secrets.OWM_LAT }}
+      OWM_LON: ${{ secrets.OWM_LON }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -26,6 +30,9 @@ jobs:
 
       - name: Build site
         run: npm run build
+
+      - name: Remove Unnecessary File
+        run: rm -rf ./dist/mockServiceWorker.js
 
       - name: Upload build output
         uses: actions/upload-pages-artifact@v3

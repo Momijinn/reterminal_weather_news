@@ -12,5 +12,5 @@ const { title, url, qrCodeSize } = Astro.props;
 
 <div class="flex h-13 gap-2">
   <div class="line-clamp-2 flex-1">{title}</div>
-  <QrCode value={url} size={qrCodeSize} />
+  {url && <QrCode value={url} size={qrCodeSize} />}
 </div>
