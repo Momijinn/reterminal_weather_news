@@ -29,19 +29,17 @@ const groupAlerts = (alerts: string[]): AlertGroup => {
   );
 };
 
+const maxAlertsItemLength = 9;
 const categorizedAlerts = groupAlerts(alerts);
+
+// 優先度順に並べて、全体で最大12件に制限
+const displayAlerts = [
+  ...categorizedAlerts.special,
+  ...categorizedAlerts.warning,
+  ...categorizedAlerts.advisory,
+].slice(0, maxAlertsItemLength);
 ---
 
-<!--  -->
-<div class="flex flex-col flex-wrap gap-3">
-  <div class="flex justify-end gap-2">
-    {categorizedAlerts.special.map((alert) => <WeatherAlert value={alert} />)}
-  </div>
-  <div class="flex justify-end gap-2">
-    {categorizedAlerts.warning.map((alert) => <WeatherAlert value={alert} />)}
-  </div>
-
-  <div class="flex justify-end gap-2">
-    {categorizedAlerts.advisory.map((alert) => <WeatherAlert value={alert} />)}
-  </div>
+<div class="flex w-full flex-wrap justify-end gap-1">
+  {displayAlerts.map((alert) => <WeatherAlert value={alert} />)}
 </div>

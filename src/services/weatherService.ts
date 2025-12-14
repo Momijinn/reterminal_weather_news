@@ -138,10 +138,16 @@ export const getWeather = async (): Promise<WeatherData> => {
 
   // 警報・注意報データを変換
   const alerts: Alert[] = response.alerts
-    ? response.alerts.map((alert: { sender_name: string; event: string }) => ({
-        sensor: alert.sender_name,
-        event: alert.event,
-      }))
+    ? response.alerts
+        .map((alert: { sender_name: string; event: string }) => ({
+          sensor: alert.sender_name,
+          event: alert.event,
+        }))
+        // 重複を排除
+        .filter(
+          (alert: Alert, index: number, self: Alert[]) =>
+            index === self.findIndex((a: Alert) => a.event === alert.event)
+        )
     : [];
 
   return {

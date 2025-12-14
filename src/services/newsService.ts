@@ -16,6 +16,13 @@ const generateErrorNewsItem = (): NewsItem[] => {
   return [item, item];
 };
 
+// linkに対してパラメータを削除する
+const sanitizeLink = (link: string): string => {
+  const url = new URL(link);
+  url.search = '';
+  return url.toString();
+};
+
 export const getNews = async (): Promise<NewsItem[]> => {
   let response = '';
 
@@ -36,7 +43,7 @@ export const getNews = async (): Promise<NewsItem[]> => {
 
   return itemsArray.slice(0, 2).map(({ title, link, pubDate }) => ({
     title,
-    url: link,
+    url: sanitizeLink(link),
     pubDate,
   }));
 };
