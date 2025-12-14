@@ -6,12 +6,11 @@ interface Props {
   size?: number;
 }
 
-const { value, size = 128 } = Astro.props;
+const { value, size = 32 } = Astro.props;
 
 const qrCodeDataUrl = await QRCode.toDataURL(value, {
   width: size,
-  margin: 1,
-  errorCorrectionLevel: 'H',
+  margin: 0,
 });
 ---
 
