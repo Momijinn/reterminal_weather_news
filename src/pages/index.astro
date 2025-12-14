@@ -25,7 +25,7 @@ const now = dayjs();
         <SubTitle text={now.format('MM/DD (ddd)')} />
         <div>{`更新: ${now.format('HH:mm')}`}</div>
       </div>
-      <div class="flex justify-between">
+      <div class="flex h-max justify-between gap-4">
         <CurrentWeather
           icon={weather.current.icon}
           temperature={weather.current.temp}
