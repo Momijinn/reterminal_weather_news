@@ -4,6 +4,8 @@ import { chromium } from 'playwright';
 const PORT = 3000;
 const OUTPUT_FILE = 'screenshot.jpg';
 const URL = `http://localhost:${PORT}/`;
+const WIDTH = 800;
+const HEIGHT = 480;
 
 async function captureScreenshot() {
   console.log(`🚀 Launching browser to screenshot ${URL}`);
@@ -11,6 +13,7 @@ async function captureScreenshot() {
   // ヘッドレスモードでChromiumを起動
   const browser = await chromium.launch();
   const page = await browser.newPage();
+  await page.setViewportSize({ width: WIDTH, height: HEIGHT });
 
   try {
     // サーバーのURLにアクセス
