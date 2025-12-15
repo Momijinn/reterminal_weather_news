@@ -6,8 +6,8 @@
     "dev": "astro dev --mode development",
     "internal": "astro dev --mode internal",
     "build": "astro build",
-    "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "screenshot": "node ./scripts/screenshot/index.ts"
   },
   "dependencies": {
     "@fontsource-variable/noto-sans-jp": "^5.2.9",
@@ -25,6 +25,7 @@
   "devDependencies": {
     "@tailwindcss/line-clamp": "^0.4.4",
     "msw": "^2.12.4",
+    "playwright": "^1.57.0",
     "prettier": "^3.7.4",
     "prettier-plugin-astro": "^0.14.1",
     "prettier-plugin-tailwindcss": "^0.7.2"
