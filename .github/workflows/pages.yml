@@ -6,6 +6,7 @@ on:
   schedule:
     # 毎時0分に実行
     - cron: '0 * * * *'
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -25,6 +26,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 24
+          cache: 'npm'
 
       - name: Install dependencies
         run: npm ci
@@ -46,9 +48,27 @@ jobs:
       - name: Remove Unnecessary File
         run: rm -f ./dist/mockServiceWorker.js
 
+      - name: 🌎 Install Playwright browsers
+        # PlaywrightでChromiumを使うためのバイナリをインストール
+        run: npx playwright install chromium
+
+      - name: Start Web App server in background
+        run: npx serve -s ./dist -l 3000 &
+
+      - name: ⏳ Wait for server to start
+        # サーバー起動に必要な時間だけ待機
+        run: sleep 5
+
+      - name: Take Screenshot using TypeScript
+        run: |
+          npm run screenshot
+          # スクリーンショットを dist ディレクトリに移動
+          mv screenshot.jpg ./dist/screenshot.jpg
+
       - name: Upload build output
         uses: actions/upload-pages-artifact@v3
         with:
+          # distディレクトリには、ビルド成果物と新しく撮影された screenshot.jpg を含む
           path: ./dist
 
   deploy:
