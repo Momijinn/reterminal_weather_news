@@ -70,7 +70,18 @@ jobs:
         uses: mfinelli/setup-imagemagick@v7
 
       - name: Convert screenshot to bmp
-        run: magick ./dist/screenshot.jpg -dither FloydSteinberg ./dist/screenshot.bmp
+        run: |
+          magick xc:"#000000" xc:"#FFFFFF" xc:"#FF0000" xc:"#FFFF00" xc:"#0000FF" xc:"#00FF00" xc:"#FF8000" +append palette.png
+          magick ./dist/screenshot.jpg \
+            -colorspace sRGB \
+            -white-threshold 85% \
+            -black-threshold 15% \
+            -level 15%,85%,0.5 \
+            -sharpen 0x3 \
+            -dither FloydSteinberg \
+            -remap palette.png \
+            -type truecolor \
+            ./dist/screenshot.bmp
 
       # GitHub Pagesへデプロイするために成果物をアップロード
 
