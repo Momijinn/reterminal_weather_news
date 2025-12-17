@@ -31,13 +31,7 @@ jobs:
       # Webアプリケーションのビルド
 
       - name: Build site
-        run: |
-          touch .env
-          echo "OWM_API_KEY=$OWM_API_KEY" >> .env
-          echo "OWM_LAT=$OWM_LAT" >> .env
-          echo "OWM_LON=$OWM_LON" >> .env
-
-          npm run build
+        run: npm run build
         env:
           NODE_ENV: production
           OWM_API_KEY: ${{ secrets.OWM_API_KEY }}
@@ -48,19 +42,21 @@ jobs:
         run: rm -f ./dist/mockServiceWorker.js
 
       # Playwrightを使ってスクリーンショットを撮る
+      # ブラウザのキャッシュで高速化
 
-      - name: Install Playwright browsers
-        # Install Playwright browsers for screenshot
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+
+      - name: Install Playwright Chromium
         run: npx playwright install chromium
 
-      - name: Start Web App server in background
-        run: npx serve -s ./dist -l 3000 &
-
-      - name: Wait for server to start
-        run: sleep 5
-
-      - name: Take Screenshot using TypeScript
+      - name: Take Screenshot
         run: |
+          npx serve -s ./dist -l 3000 & 
+          npx wait-on http://localhost:3000
           npm run screenshot
           mv screenshot.jpg ./dist/screenshot.jpg
 
