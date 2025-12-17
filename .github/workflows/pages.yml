@@ -3,11 +3,7 @@ name: Build and Deploy
 on:
   push:
     branches: [main]
-  schedule:
-    # 毎時0分に実行
-    - cron: '0 * * * *'
   workflow_dispatch:
-    types: [build_and_deploy]
 
 permissions:
   contents: read
