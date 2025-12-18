@@ -26,11 +26,12 @@ jobs:
           cache: "npm"
           cache-dependency-path: web/package-lock.json
 
-      - name: Install and Build
+      - name: Install and Build and Remove Remove Unnecessary File
         run: |
           cd web
           npm ci
           npm run build
+          rm -f dist/mockServiceWorker.js
         env:
           NODE_ENV: production
           OWM_API_KEY: ${{ secrets.OWM_API_KEY }}
@@ -49,7 +50,6 @@ jobs:
       - name: Take Screenshot
         run: |
           cd web
-          rm -f dist/mockServiceWorker.js
           npx serve -s ./dist -l 3000 & 
           npx wait-on http://localhost:3000
           npm run screenshot
