@@ -23,50 +23,44 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 24
-          cache: 'npm'
+          cache: "npm"
+          cache-dependency-path: web/package-lock.json
 
-      - name: Install dependencies
-        run: npm ci
-
-      # Webアプリケーションのビルド
-
-      - name: Build site
-        run: npm run build
+      - name: Install and Build and Remove Remove Unnecessary File
+        run: |
+          cd web
+          npm ci
+          npm run build
+          rm -f dist/mockServiceWorker.js
         env:
           NODE_ENV: production
           OWM_API_KEY: ${{ secrets.OWM_API_KEY }}
           OWM_LAT: ${{ vars.OWM_LAT }}
           OWM_LON: ${{ vars.OWM_LON }}
 
-      - name: Remove Unnecessary File
-        run: rm -f ./dist/mockServiceWorker.js
-
-      # Playwrightを使ってスクリーンショットを撮る
-      # ブラウザのキャッシュで高速化
-
-      - name: Cache Playwright browsers
+      - name: Cache Playwright
         uses: actions/cache@v4
         with:
           path: ~/.cache/ms-playwright
-          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+          key: playwright-${{ runner.os }}-${{ hashFiles('web/package-lock.json') }}
 
-      - name: Install Playwright Chromium
+      - name: Install Playwright
         run: npx playwright install chromium
 
       - name: Take Screenshot
         run: |
+          cd web
           npx serve -s ./dist -l 3000 & 
           npx wait-on http://localhost:3000
           npm run screenshot
           mv screenshot.jpg ./dist/screenshot.jpg
 
-      # ImageMagickをセットアップして画像変換を行う
-
       - name: Setup ImageMagick
         uses: mfinelli/setup-imagemagick@v7
 
-      - name: Convert screenshot to bmp
+      - name: Process Image
         run: |
+          cd web
           magick xc:"#000000" xc:"#FFFFFF" xc:"#FF0000" xc:"#FFFF00" xc:"#0000FF" xc:"#00FF00" xc:"#FF8000" +append palette.png
           magick ./dist/screenshot.jpg \
             -colorspace sRGB \
@@ -79,12 +73,10 @@ jobs:
             -type truecolor \
             ./dist/screenshot.bmp
 
-      # GitHub Pagesへデプロイするために成果物をアップロード
-
       - name: Upload build output
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./dist
+          path: web/dist
 
   deploy:
     needs: build
