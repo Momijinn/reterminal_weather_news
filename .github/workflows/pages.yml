@@ -61,14 +61,32 @@ jobs:
           npm run screenshot
           mv screenshot.jpg ./dist/screenshot.jpg
 
-      - name: Setup ImageMagick
-        uses: mfinelli/setup-imagemagick@v7
+      - name: Ensure ImageMagick
+        run: |
+          set -euo pipefail
+          if command -v convert >/dev/null 2>&1; then
+            convert -version
+            exit 0
+          fi
+
+          # Fallback: install via Ubuntu official repositories.
+          # Add retries to reduce transient DNS/mirror failures.
+          sudo apt-get update -o Acquire::Retries=5 || (
+            # If the default Azure mirror has transient DNS issues, swap to the canonical mirror.
+            sudo sed -i -e 's|azure.archive.ubuntu.com|archive.ubuntu.com|g' \
+              /etc/apt/sources.list \
+              /etc/apt/sources.list.d/*.list \
+              /etc/apt/sources.list.d/*.sources 2>/dev/null || true
+            sudo apt-get update -o Acquire::Retries=5
+          )
+          sudo apt-get install -y imagemagick
+          convert -version
 
       - name: Process Image
         run: |
           cd web
-          magick xc:"#000000" xc:"#FFFFFF" xc:"#FF0000" xc:"#FFFF00" xc:"#0000FF" xc:"#00FF00" xc:"#FF8000" +append palette.png
-          magick ./dist/screenshot.jpg \
+          convert xc:"#000000" xc:"#FFFFFF" xc:"#FF0000" xc:"#FFFF00" xc:"#0000FF" xc:"#00FF00" xc:"#FF8000" +append palette.png
+          convert ./dist/screenshot.jpg \
             -colorspace sRGB \
             -white-threshold 85% \
             -black-threshold 15% \
