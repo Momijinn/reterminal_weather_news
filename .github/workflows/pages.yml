@@ -14,7 +14,8 @@ jobs:
   build:
     env:
       TZ: Asia/Tokyo
-    runs-on: ubuntu-latest
+    # Playwright は ubuntu-latest (26.04) を未サポートのため、サポート済みの 24.04 に固定する
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout
         uses: actions/checkout@v6
